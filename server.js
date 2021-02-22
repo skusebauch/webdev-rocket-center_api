@@ -14,6 +14,9 @@ const bootcamps = require('./routes/bootcamps')
 
 const app = express()
 
+// body parser - otherwise always undefined the req.body
+app.use(express.json())
+
 // Dev loggin middleware
 process.env.NODE_ENV === 'development' && app.use(morgan('dev'))
 
