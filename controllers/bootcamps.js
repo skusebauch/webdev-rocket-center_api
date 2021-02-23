@@ -32,7 +32,9 @@ exports.getBootcamp = async (req, res, next) => {
       data: bootcamp,
     })
   } catch (error) {
-    res.status(400).json({ success: false })
+    // res.status(400).json({ success: false })
+    // would be only html 500 - implement middleware for error handling
+    next(error)
   }
 }
 
