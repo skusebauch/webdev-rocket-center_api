@@ -18,7 +18,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
   removeFields.forEach(param => delete reqQuery[param])
 
   let queryStr = JSON.stringify(reqQuery)
-  console.log('queryStr', queryStr)
+
   // averageCost[gte]=10000 or careers[in]=Business
   // https://mongoosejs.com/docs/tutorials/query_casting.html
   // create operators ($gt, $gte, etc)
@@ -73,6 +73,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
       limit,
     }
   }
+
   res.status(200).json({
     success: true,
     count: bootcamps.length,
