@@ -27,7 +27,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
   // query string = /api/v1/bootcamps?location.city=Lowell&careers[in]=UI/UX
   // ****queryString {"location.city":"Lowell","careers":{"$in":"UI/UX"}}
   // Finding resource
-  query = Bootcamp.find(JSON.parse(queryStr))
+  query = Bootcamp.find(JSON.parse(queryStr)).populate('courses')
 
   // Select Fields - docs: https://mongoosejs.com/docs/queries.html
   if (req.query.select) {
@@ -133,14 +133,14 @@ exports.updateBootcamp = asyncHandler(async (req, res, next) => {
 // @route    DELETE /api/v1/bootcamps/:id
 // @access   Private
 exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
-  const bootcamp = await Bootcamp.findByIdAndDelete(req.params.id)
+  const bootcamp = await Bootcamp.findById(req.params.id)
 
   if (!bootcamp) {
     return next(
       new ErrorResponse(`Resource not found with id of ${req.params.id}`, 404)
     )
   }
-
+  bootcamp.remove()
   res.status(200).json({
     success: true,
     data: {},
@@ -171,7 +171,8 @@ exports.getBoocampsInRadius = asyncHandler(async (req, res, next) => {
   // https://docs.mongodb.com/manual/reference/operator/query/centerSphere/
   const bootcamps = await Bootcamp.find({
     location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
-  })
+  }).populate('courses')
+
   res.status(200).json({
     success: true,
     count: bootcamps.length,
