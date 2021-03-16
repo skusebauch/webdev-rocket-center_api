@@ -1,9 +1,12 @@
 const express = require('express')
-const { getCourses } = require('../controllers/courses')
+const { getCourses, getCourse, addCourse } = require('../controllers/courses')
 
 // merge params from bootcamp
 const router = express.Router({ mergeParams: true })
 
-router.route('/').get(getCourses)
+// prefix is always /:bootcampId/courses (defined in bootcamp routes)
+router.route('/').get(getCourses).post(addCourse)
+
+router.route('/:id').get(getCourse)
 
 module.exports = router
