@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const slugify = require('slugify')
-const asyncHandler = require('../middleware/async')
 const geocoder = require('../utils/geocoder')
 
 const BootcampSchema = new mongoose.Schema(
