@@ -13,14 +13,16 @@ const Bootcamp = require('../models/Bootcamp')
 
 // Include other ressource routers
 const courseRouter = require('./courses')
+const reviewRouter = require('./reviews')
 
 const router = express.Router()
 
 const advancedResults = require('../middleware/advancedResults')
 const { protect, authorize } = require('../middleware/auth')
 
-// Reroute into other resource routers if first argument is hit - add mergeParams true to course router
+// Reroute into other resource routers or forward to specific router - add mergeParams true to course router
 router.use('/:bootcampId/courses', courseRouter)
+router.use('/:bootcampId/reviews', reviewRouter)
 
 router.route('/radius/:zipcode/:distance/:unit').get(getBoocampsInRadius)
 
