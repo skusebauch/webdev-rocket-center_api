@@ -95,10 +95,6 @@ const BootcampSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
     user: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
@@ -106,6 +102,7 @@ const BootcampSchema = new mongoose.Schema(
     },
   },
   {
+    timestamps: true,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
   }

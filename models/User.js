@@ -3,39 +3,40 @@ const crypto = require('crypto')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
-const UserSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, 'Please add a name'],
+const UserSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'Please add a name'],
+    },
+    email: {
+      type: String,
+      required: [true, 'Please add a email'],
+      unique: true,
+      match: [
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        'Please add a valid email',
+      ],
+    },
+    role: {
+      type: String,
+      enum: ['user', 'publisher', 'admin'],
+      default: 'user',
+    },
+    password: {
+      type: String,
+      required: [true, 'Please add a password'],
+      minlength: 6,
+      // not show password at json res
+      select: false,
+    },
+    resetPasswordToken: String,
+    resetPasswordExpire: Date,
   },
-  email: {
-    type: String,
-    required: [true, 'Please add a email'],
-    unique: true,
-    match: [
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      'Please add a valid email',
-    ],
-  },
-  role: {
-    type: String,
-    enum: ['user', 'publisher', 'admin'],
-    default: 'user',
-  },
-  password: {
-    type: String,
-    required: [true, 'Please add a password'],
-    minlength: 6,
-    // not show password at json res
-    select: false,
-  },
-  resetPasswordToken: String,
-  resetPasswordExpire: Date,
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-})
+  {
+    timestamps: true,
+  }
+)
 
 // Encrypt password using bcryptjs
 UserSchema.pre('save', async function (next) {
